@@ -1,0 +1,42 @@
+.buttonShowHide{
+    background: transparent;
+    border: none;
+    position: absolute;
+    right: 10px;
+    bottom: 5px;
+}
+.show{
+    display: inline;
+}
+.hide{
+    display: none;
+}
+.form-text{
+    font-weight: 500;
+}
+.row-config{
+    --bs-gutter-x: none;
+}
+.parent-form{
+    box-sizing: border-box;
+}
+.form-column{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.form-body {
+    overflow: auto;
+    border-width: 1px;
+    position: relative;
+    background-color: #fff;
+    padding: 20px;
+    box-sizing: border-box;
+}
+.image{
+    background-image: url('https://images6.alphacoders.com/386/386017.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
