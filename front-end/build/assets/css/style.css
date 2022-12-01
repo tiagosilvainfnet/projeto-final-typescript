@@ -1,0 +1,131 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500&display=swap');
+@import url("./variables.css");
+
+*{
+    padding: 0;
+    margin: 0;
+    transition: 0.3s ease-out all;
+    font-family: var(--font);
+}
+
+body{
+    text-align: center;
+}
+
+#genius__score{
+    font-size: 4em;
+}
+
+.genius{
+    width: 100%;
+    max-width: 800px;
+    position: relative;
+    display: inline-block;
+}
+
+.genius .genius__item{
+    width: 50%;
+    float: left;
+    border: 20px solid transparent;
+    box-sizing: border-box;
+}
+
+.genius .genius__item--0{
+    background-color: rgb(0, 177, 56);
+    border-radius: var(--borderRadius) 0 0 0;
+}
+.genius .genius__item--0:hover, .genius .genius__item--0:active, .genius__item--0__active{
+    border-color: rgb(0, 94, 30) !important;
+}
+
+
+.genius .genius__item--1{
+    background-color: rgb(220, 0, 0);
+    border-radius: 0 var(--borderRadius) 0 0;
+}
+.genius .genius__item--1:hover, .genius .genius__item--1:active, .genius__item--1__active{
+    border-color: rgb(100, 0, 0) !important;
+}
+
+.genius .genius__item--2{
+    background-color: rgb(0, 154, 220);
+    border-radius: 0 0 0 var(--borderRadius);
+}
+.genius .genius__item--2:hover, .genius .genius__item--2:active, .genius__item--2__active{
+    border-color: rgb(0, 86, 123) !important;
+}
+
+.genius .genius__item--3{
+    background-color: rgb(220, 202, 0);
+    border-radius: 0 0 var(--borderRadius) 0;
+}
+.genius .genius__item--3:hover, .genius .genius__item--3:active, .genius__item--3__active{
+    border-color: rgb(171, 157, 0) !important;
+}
+
+.genius .genius__item:disabled, .genius .genius__item:disabled:hover{
+    opacity: 0.3;
+    border-color: transparent !important;
+}
+
+.genius .genius__item--4{
+    width: 40%;
+    background-color: rgb(0, 0, 0);
+    border-color: rgb(110, 110, 110);
+    border-radius: 100%;
+    color: #fff;
+    font-size: 2em;
+}
+.genius .genius__item--4:hover, .genius .genius__item--4:active{
+    border-color: rgb(60, 60, 60);
+}
+.genius .genius__item--4:disabled, .genius .genius__item--4[disabled]:hover{
+    background-color: rgb(110, 110, 110);
+    border-color: rgb(110, 110, 110);
+}
+
+.genius__item--middle{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+}
+
+.flex-input{
+    display: flex;
+    flex-direction: column;
+    max-width: 300px;
+    margin: 0 auto 20px;
+}
+
+
+#ranking{
+    background-color: #333;
+    color: #fff;
+    position: fixed;
+    top: 0;
+    width: 200px;
+    padding: 15px;
+    z-index: 999;
+    max-height: 100vh;
+    overflow: auto;
+}
+
+#ranking ul{
+    list-style: none;
+}
+
+#meu-ranking{
+    background-color: #333;
+    color: #fff;
+    position: fixed;
+    top: 0;
+    width: 200px;
+    padding: 15px;
+    z-index: 999;
+    max-height: 100vh;
+    overflow: auto;
+}
+
+#meu-ranking ul{
+    list-style: none;
+}

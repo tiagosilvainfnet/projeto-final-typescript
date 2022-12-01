@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genius - Game</title>
+    <link rel="icon" type="image/png" href="./assets/img/favicon.png">
+    <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+
+<body>
+    <div id="area-erro" style="display: none;">
+        <div>
+            Você errou a sequência, tente novamente!!!
+        </div>
+        <div>
+            <button type="button" onclick="reiniciarGame()">Tente novamente</button>
+        </div>
+    </div>
+
+    <button onclick="toggleRanking(1)">Ranking</button>
+    <button onclick="toggleRanking(2)">MeuRanking</button>
+
+    <div id="ranking" style="left: -100%;">
+        <h2>Ranking</h2>
+        <div id="ranking-filho"></div>
+    </div>
+    <div id="meu-ranking" style="right: -100%;">
+        <h2>Meu Ranking</h2>
+        <div id="meu-ranking-filho"></div>
+    </div>
+
+    <div id="usuario" class="flex-input">
+        <label for="nome">Digite seu nome: </label>
+        <input type="text" id="nome">
+    </div>
+
+    <div id="velocidade" class="flex-input">
+        <label for="speed">Velocidade: </label>
+        <input type="range" id="speed" min="1" max="4" step="1">
+        <span id="speed-variable">1</span>
+    </div>
+
+    <div class="genius">
+        <button type="button" disabled class="genius__item genius__item--0 genius__item--clickable" id="part-0"></button>
+        <button type="button" disabled class="genius__item genius__item--1 genius__item--clickable" id="part-1"></button>
+        <button type="button" disabled class="genius__item genius__item--2 genius__item--clickable" id="part-2"></button>
+        <button type="button" disabled class="genius__item genius__item--3 genius__item--clickable" id="part-3"></button>
+        <button type="button" onclick="startGame()" class="genius__item genius__item--4 genius__item--middle" id="part-4">
+            INICIAR GAME!!!
+        </button>
+    </div>
+    <div id="genius__score">
+        0
+    </div>
+
+    <script src="./assets/js/script.js"></script>
+</body>
+</html>
