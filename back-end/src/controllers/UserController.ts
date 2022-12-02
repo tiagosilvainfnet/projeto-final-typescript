@@ -22,20 +22,26 @@ class UserController{
                 return {
                     status: 200,
                     data: {
-                        id,
-                        username, 
-                        email, 
-                        name, 
-                        createdAt, 
-                        updatedAt 
+                        msg: 'Login realizado com sucesso',
+                        user: {
+                            id,
+                            username, 
+                            email, 
+                            name, 
+                            createdAt, 
+                            updatedAt 
+                        }
                     }
                 }
             }
         }
-
+        
         return {
             status: 401,
-            data: 'Dados inválidos'
+            data: {
+                msg: 'Dados inválidos',
+                user: {}
+            }
         }
     }
 

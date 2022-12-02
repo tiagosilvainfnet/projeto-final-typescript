@@ -1,4 +1,13 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 const emailValidation = (value, name, key) => {
     var re = /\S+@\S+\.\S+/;
     const result = re.test(value);
@@ -83,8 +92,60 @@ const validateEqualPassword = (value, name, key) => {
         inputs[key].valid = false;
     }
 };
-const register = () => {
-    console.log("Cadastrou");
+const register = () => __awaiter(void 0, void 0, void 0, function* () {
+    const result = validFields();
+    if (result) {
+        let data = {};
+        keys.forEach(key => {
+            if (inputs[key].name !== 'confirmPassword') {
+                data[inputs[key].name] = inputs[key].input.value;
+            }
+        });
+        try {
+            const response = yield fetch(`http://localhost:3000/auth/register`, {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            const result = yield response.json();
+            alert(result.msg);
+            if (response.status === 201) {
+                window.location.replace("http://127.0.0.1:5500/front-end/build/login.html");
+            }
+        }
+        catch (err) {
+            alert('Erro criar usuário');
+            console.log(err);
+        }
+    }
+});
+const validFields = () => {
+    let result = true;
+    for (const key of keys) {
+        let input = inputs[key];
+        let feedbackField = document.querySelector(`#${input.name}Feedback`);
+        if (input.input.value === "") {
+            feedbackField.innerText = `O campo ${input.name} precisa ser preenchido`;
+            feedbackField.classList.add('invalid-feedback');
+            feedbackField.classList.remove('valid-feedback');
+            input.input.classList.add('is-invalid');
+            input.input.classList.remove('is-valid');
+            result = false;
+        }
+        else {
+            feedbackField.innerText = `Tudo certo!!!`;
+            feedbackField.classList.add('valid-feedback');
+            feedbackField.classList.remove('invalid-feedback');
+            input.input.classList.add('is-valid');
+            input.input.classList.remove('is-invalid');
+        }
+        if (!input.valid) {
+            result = false;
+        }
+    }
+    return result;
 };
 const togglePassword = (element) => {
     element.classList.add('hide');
@@ -109,7 +170,7 @@ const inputs = {
         input: document.querySelector('#inputEmail'),
         validate: emailValidation,
         name: 'email',
-        valid: false
+        valid: false,
     },
     inputUsername: {
         input: document.querySelector('#inputUsername'),
@@ -142,5 +203,11 @@ keys.forEach(key => {
         inputs[key].input.addEventListener('keyup', (event) => {
             inputs[key].validate(event.currentTarget.value, inputs[key].name, key);
         });
+    }
+});
+window.addEventListener('load', () => {
+    const user = window.localStorage.getItem('user');
+    if (user) {
+        window.location.replace("http://127.0.0.1:5500/front-end/build/index.html");
     }
 });

@@ -19,31 +19,43 @@
                     <div class="mb-3">
                         <label for="inputEmail" class="form-label">E-mail</label>
                         <input name="email" type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp">
+                        <div id="emailFeedback"></div>
                         <div id="emailHelp" class="form-text">Adicione um e-mail válido.</div>
                     </div>
+                    <!-- <div>
+                        <input type="checkbox" name="" id="checkbox">
+                        <label for="checkbox">
+                            <i class="fa-solid fa-check-double check"></i>
+                            <i class="fa-solid fa-square unchecked"></i>
+                        </label>
+                    </div> -->
                     <div class="mb-3">
                         <label for="inputUsername" class="form-label">Usuário</label>
                         <input name="username" type="text" class="form-control" id="inputUsername" aria-describedby="emailHelp">
+                        <div id="usernameFeedback"></div>
                         <div id="usernameHelp1" class="form-text">Sem carateres especiais.</div>
                         <div id="usernameHelp2" class="form-text">Sem espaços.</div>
                     </div>
                     <div class="mb-3">
                         <label for="inputName" class="form-label">Nome</label>
                         <input name="name" type="text" class="form-control" id="inputName" aria-describedby="emailHelp">
+                        <div id="nameFeedback"></div>
                     </div>
                     <div class="mb-3 position-relative">
                         <label for="inputPassword" class="form-label">Senha</label>
-                        <input name="password" type="password" class="form-control" id="inputPassword">
                         <button type="button" class="buttonShowHide show" onclick="togglePassword(this)" id="exibir">
                             <i class="fa-solid fa-eye"></i>
                         </button>
                         <button type="button" class="buttonShowHide hide" onclick="togglePassword(this)" id="ocultar">
                             <i class="fa-solid fa-eye-slash"></i>
                         </button>
+                        <input name="password" type="password" class="form-control" id="inputPassword">
+                        <div id="passwordFeedback"></div>
                     </div>
                     <div class="mb-3">
                         <label for="inputConfirmPassword" class="form-label">Confirme sua senha</label>
                         <input type="password" class="form-control" id="inputConfirmPassword">
+                        <div id="confirmPasswordFeedback"></div>
                         <div id="passwordHelp1" class="form-text">Mínimo de 8 lertras.</div>
                         <div id="passwordHelp2" class="form-text">Uma letra maiúscula.</div>
                         <div id="passwordHelp3" class="form-text">Uma letra minúscula.</div>
@@ -58,7 +70,6 @@
             </div>
         </div>
     </div>
-
     <script src="./assets/js/register.js"></script>
 </body>
 </html>

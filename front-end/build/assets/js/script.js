@@ -26,13 +26,16 @@ const sounds = [
 let scoreVariable = 0;
 const score = document.getElementById('genius__score');
 const areaErro = document.getElementById('area-erro');
-let user = "";
 let positions = [], mPositions = [];
 const tagRanking = document.getElementById('ranking');
 const tagMeuRanking = document.getElementById('meu-ranking');
 const speedVariable = document.getElementById('speed-variable');
 let speed = 1;
 let inputSpeed = document.querySelector('#speed');
+const userLogged = getUser();
+const btnEntrar = document.querySelector('#btn-entrar');
+const btnSair = document.querySelector('#btn-sair');
+const btnMeuRanking = document.querySelector('#btn-meu-ranking');
 inputSpeed.addEventListener('change', (event) => {
     if (event.currentTarget) {
         const selectedSpeed = event.currentTarget.value;
@@ -50,7 +53,10 @@ const _get = (endpoint) => __awaiter(void 0, void 0, void 0, function* () {
 const _post = (endpoint, data) => __awaiter(void 0, void 0, void 0, function* () {
     const response = yield fetch(`http://localhost:3000/${endpoint}`, {
         method: 'POST',
-        body: data
+        body: JSON.stringify(data),
+        headers: {
+            'Content-Type': 'application/json'
+        }
     });
     const result = yield response.json();
     return result;
@@ -87,10 +93,12 @@ const toggleRanking = (type) => {
     }
 };
 const loadRanking = () => __awaiter(void 0, void 0, void 0, function* () {
-    const ranking = yield _get('game/score?order=score,desc');
-    const meuRanking = yield _get('game/score/1?order=score,desc');
+    const ranking = yield _get('game/score?order=score,desc&limit=20');
     constructRanking(ranking, tagRanking);
-    constructRanking(meuRanking, tagMeuRanking);
+    if (isLoggedIn()) {
+        const meuRanking = yield _get(`game/score/${userLogged.id}?order=score,desc&limit=20`);
+        constructRanking(meuRanking, tagMeuRanking);
+    }
 });
 const constructRanking = (item, tag) => {
     let list = `<ul>`;
@@ -102,8 +110,13 @@ const constructRanking = (item, tag) => {
     list += '</ul>';
     tag.children[1].innerHTML = list;
 };
-const updateRankig = () => {
-};
+const updateRankig = () => __awaiter(void 0, void 0, void 0, function* () {
+    yield _post('game/score', {
+        score: scoreVariable,
+        user_id: userLogged.id
+    });
+    loadRanking();
+});
 const configs = () => __awaiter(void 0, void 0, void 0, function* () {
     parts.map((part, idx) => {
         part === null || part === void 0 ? void 0 : part.addEventListener('click', () => setPosition(idx));
@@ -115,27 +128,16 @@ const toggleParts = (status) => {
     });
 };
 const startGame = () => __awaiter(void 0, void 0, void 0, function* () {
-    let el = document.getElementById('nome');
-    user = el.value;
-    if (user !== "") {
-        el.value = "";
-        if (score) {
-            score.innerText = "0";
-        }
-        if (!jogoIniciado) {
-            jogoIniciado = true;
-            if (btnStart) {
-                btnStart.disabled = true;
-                btnStart.innerText = 'JOGO INICIADO!!!';
-                toggleParts(false);
-                loadPosition();
-            }
-        }
+    if (score) {
+        score.innerText = "0";
     }
-    else {
-        alert("Digite um nome para iniciar o game!!!");
+    if (!jogoIniciado) {
+        jogoIniciado = true;
         if (btnStart) {
-            btnStart.disabled = false;
+            btnStart.disabled = true;
+            btnStart.innerText = 'JOGO INICIADO!!!';
+            toggleParts(false);
+            loadPosition();
         }
     }
 });
@@ -164,8 +166,9 @@ const setPosition = (idx) => __awaiter(void 0, void 0, void 0, function* () {
             if (areaErro) {
                 areaErro.style.display = 'block';
             }
-            updateRankig();
-            loadRanking();
+            if (isLoggedIn()) {
+                updateRankig();
+            }
             toggleParts(true);
         }
         else {
@@ -217,6 +220,31 @@ const reiniciarGame = () => {
     }
     startGame();
 };
+const isLoggedIn = () => {
+    const user = window.localStorage.getItem('user');
+    if (user) {
+        btnEntrar.style.display = 'none';
+        btnSair.style.display = 'block';
+        btnMeuRanking.style.display = 'inline-block';
+    }
+    else {
+        btnSair.style.display = 'none';
+        btnEntrar.style.display = 'block';
+        btnMeuRanking.style.display = 'none';
+    }
+    return user;
+};
+const logout = () => {
+    window.localStorage.clear();
+    window.location.replace("http://127.0.0.1:5500/front-end/build/login.html");
+};
+function getUser() {
+    const user = window.localStorage.getItem('user');
+    if (user) {
+        return JSON.parse(user);
+    }
+    return null;
+}
 defineHeight();
 window.addEventListener('resize', () => {
     defineHeight();

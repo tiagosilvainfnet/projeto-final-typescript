@@ -17,13 +17,16 @@ const sounds = [
 let scoreVariable = 0;
 const score = document.getElementById('genius__score');
 const areaErro = document.getElementById('area-erro');
-let user: any = "";
 let positions: any = [], mPositions: any = [];
 const tagRanking = document.getElementById('ranking') as HTMLElement;
 const tagMeuRanking = document.getElementById('meu-ranking') as HTMLElement;
 const speedVariable = document.getElementById('speed-variable') as HTMLElement
 let speed = 1;
 let inputSpeed = document.querySelector('#speed') as HTMLInputElement;
+const userLogged = getUser();
+const btnEntrar: any = document.querySelector('#btn-entrar');
+const btnSair: any = document.querySelector('#btn-sair');
+const btnMeuRanking: any = document.querySelector('#btn-meu-ranking');
 
 inputSpeed.addEventListener('change', (event: any) => {
     if(event.currentTarget){
@@ -44,7 +47,10 @@ const _get = async (endpoint: string) => {
 const _post = async (endpoint: string, data: any) => {
     const response = await fetch(`http://localhost:3000/${endpoint}`, {
         method: 'POST',
-        body: data
+        body: JSON.stringify(data),
+        headers: {
+            'Content-Type': 'application/json'
+        }
     })
     const result = await response.json();
     return result;
@@ -79,16 +85,16 @@ const toggleRanking = (type: number) => {
             tagMeuRanking.style.right = '0px';
         }
     }
-
-    
 }
 
 const loadRanking = async () => {
-    const ranking = await _get('game/score?order=score,desc');
-    const meuRanking = await _get('game/score/1?order=score,desc');
-
+    const ranking = await _get('game/score?order=score,desc&limit=20');
     constructRanking(ranking, tagRanking);
-    constructRanking(meuRanking, tagMeuRanking);
+
+    if(isLoggedIn()){
+        const meuRanking = await _get(`game/score/${userLogged.id}?order=score,desc&limit=20`);
+        constructRanking(meuRanking, tagMeuRanking);
+    }
 }
 
 const constructRanking = (item: any, tag: any) => {
@@ -104,8 +110,12 @@ const constructRanking = (item: any, tag: any) => {
     tag.children[1].innerHTML = list;
 }
 
-const updateRankig = () => {
-    
+const updateRankig = async () => {
+    await _post('game/score', {
+        score: scoreVariable,
+        user_id: userLogged.id
+    })
+    loadRanking();
 }
 
 const configs = async () => {
@@ -121,28 +131,17 @@ const toggleParts = (status: boolean) => {
 }
 
 const startGame = async () => {
-    let el = document.getElementById('nome') as HTMLInputElement;
-    user = el.value;
-    if(user !== ""){
-        el.value = "";
-    
-        if(score){
-            score.innerText = "0";
-        }
+    if(score){
+        score.innerText = "0";
+    }
 
-        if(!jogoIniciado){
-            jogoIniciado = true;
-            if(btnStart){
-                btnStart.disabled = true;
-                btnStart.innerText = 'JOGO INICIADO!!!';
-                toggleParts(false);
-                loadPosition();
-            }
-        }
-    }else{
-        alert("Digite um nome para iniciar o game!!!");
+    if(!jogoIniciado){
+        jogoIniciado = true;
         if(btnStart){
-            btnStart.disabled = false;
+            btnStart.disabled = true;
+            btnStart.innerText = 'JOGO INICIADO!!!';
+            toggleParts(false);
+            loadPosition();
         }
     }
 }
@@ -176,8 +175,9 @@ const setPosition = async (idx: number) => {
             if(areaErro){
                 areaErro.style.display = 'block';
             }
-            updateRankig();
-            loadRanking();
+            if(isLoggedIn()){
+                updateRankig();
+            }
             toggleParts(true);
         }else{
             if(currentPosition === positions.length - 1){
@@ -231,6 +231,35 @@ const reiniciarGame = () => {
         areaErro.style.display = 'none';
     }
     startGame();
+}
+
+const isLoggedIn = () => {
+    const user = window.localStorage.getItem('user');
+
+    if(user){
+        btnEntrar.style.display = 'none';
+        btnSair.style.display = 'block';
+        btnMeuRanking.style.display = 'inline-block';
+    }else{
+        btnSair.style.display = 'none';
+        btnEntrar.style.display = 'block';
+        btnMeuRanking.style.display = 'none';
+    }
+
+    return user;
+}
+
+const logout = () => {
+    window.localStorage.clear();
+    window.location.replace("http://127.0.0.1:5500/front-end/build/login.html");
+} 
+
+function getUser(){
+    const user = window.localStorage.getItem('user');
+    if(user){
+        return JSON.parse(user)
+    }
+    return null;
 }
 
 defineHeight();

@@ -19,9 +19,11 @@
         </div>
     </div>
 
-    <a href="./login.html">Entrar</a><br>
+    <a href="./login.html" id="btn-entrar">Entrar</a><br>
+    <button onclick="logout()" id="btn-sair" style="display: block;margin: 0 auto;">Sair</button>
+
     <button onclick="toggleRanking(1)">Ranking</button>
-    <button onclick="toggleRanking(2)">MeuRanking</button>
+    <button onclick="toggleRanking(2)" id="btn-meu-ranking">MeuRanking</button>
 
     <div id="ranking" style="left: -100%;">
         <h2>Ranking</h2>
@@ -32,14 +34,9 @@
         <div id="meu-ranking-filho"></div>
     </div>
 
-    <div id="usuario" class="flex-input">
-        <label for="nome">Digite seu nome: </label>
-        <input type="text" id="nome">
-    </div>
-
     <div id="velocidade" class="flex-input">
         <label for="speed">Velocidade: </label>
-        <input type="range" id="speed" min="1" max="4" step="1">
+        <input type="range" id="speed" min="1" max="8" step="1">
         <span id="speed-variable">1</span>
     </div>
 

@@ -5,6 +5,19 @@
     right: 10px;
     bottom: 5px;
 }
+
+.is-invalid~.buttonShowHide{
+    right: 25px;
+    bottom: 31px;
+    color: #dc3545;
+}
+
+.is-valid~.buttonShowHide{
+    right: 25px;
+    bottom: 31px;
+    color: #198754;
+}
+
 .show{
     display: inline;
 }
@@ -40,3 +53,28 @@
     background-repeat: no-repeat;
     background-size: cover;
 }
+
+input[type=checkbox]{
+    display: none;
+}
+
+.check, .unchecked{
+    font-size: 2em;
+    cursor: pointer;
+}
+
+input[type=checkbox]~label .check{
+    display: none;
+}
+input[type=checkbox]:checked~label .check{
+    display: initial;
+}
+
+input[type=checkbox]~label .unchecked{
+    display: initial;
+}
+input[type=checkbox]:checked~label .unchecked{
+    display: none;
+}
+
+
